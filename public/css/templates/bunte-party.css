@@ -1,0 +1,28 @@
+/* Bunte Party: neonbuntes Konfetti-Design auf hellem Grund, Magenta / Tuerkis / Gelb */
+body.tpl-bunte-party {
+  --color-bg: #fffbea;
+  --color-surface: #ffffff;
+  --color-primary: #ff2d95;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #00b8a9;
+  --color-text: #241b3a;
+  --color-text-muted: #6c5f8c;
+  --color-border: #f2dff0;
+  --font-heading: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Segoe UI', system-ui, sans-serif;
+  --radius: 18px;
+  --radius-lg: 26px;
+  background-image:
+    radial-gradient(circle at 12% 12%, rgba(255, 45, 149, 0.16), transparent 40%),
+    radial-gradient(circle at 88% 20%, rgba(0, 184, 169, 0.16), transparent 42%),
+    radial-gradient(circle at 50% 95%, rgba(255, 214, 0, 0.2), transparent 40%);
+  background-attachment: fixed;
+}
+body.tpl-bunte-party .btn-primary {
+  background: linear-gradient(135deg, #ff2d95, #ffd600 60%, #00b8a9);
+  color: #241b3a;
+}
+body.tpl-bunte-party .card, body.tpl-bunte-party .big-choice, body.tpl-bunte-party .photo-tile {
+  border-radius: var(--radius-lg);
+}
+body.tpl-bunte-party .brand::before { content: '🎊 '; }

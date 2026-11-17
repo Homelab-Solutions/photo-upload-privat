@@ -1,0 +1,41 @@
+<%- include('../partials/head', { title: 'Hochladen – ' + event.name, template: event.template, csrfToken: csrfToken }) %>
+<div class="container" style="padding-top:24px;padding-bottom:40px;">
+  <div class="row-between">
+    <a href="/e/<%= event.id %>" class="btn btn-secondary btn-sm">&larr; Zurueck</a>
+    <h1 class="mt-0" style="font-size:1.3rem;"><%= event.name %></h1>
+    <span></span>
+  </div>
+
+  <% if (!open) { %>
+    <div class="card mt-3 text-center">
+      <h2>Upload derzeit nicht moeglich</h2>
+      <p class="text-muted">Das Zeitfenster fuer Uploads ist entweder noch nicht geoeffnet oder bereits beendet. Bitte wende dich an den Gastgeber.</p>
+    </div>
+  <% } else { %>
+    <% if (typeof error !== 'undefined' && error) { %><div class="alert alert-error mt-2"><%= error %></div><% } %>
+
+    <div class="card mt-3">
+      <form id="upload-form" method="POST" action="/e/<%= event.id %>/upload" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="dropzone" id="dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 16V4M12 4l-4 4M12 4l4 4"/>
+            <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>
+          </svg>
+          <p><strong>Fotos &amp; Videos hier ablegen</strong><br>oder klicken, um auszuwaehlen</p>
+          <p class="text-muted text-sm">Bilder bis <%= maxImageMb %> MB, Videos bis <%= maxVideoMb %> MB. Formate: JPG, PNG, HEIC, WEBP, MP4, MOV.</p>
+          <input type="file" id="file-input" name="photos" multiple accept="image/jpeg,image/png,image/heic,image/heif,image/webp,video/mp4,video/quicktime" style="display:none;">
+        </div>
+        <div class="file-preview-grid" id="preview-grid"></div>
+        <div class="progress-bar" id="progress-bar" style="display:none;"><div class="fill" id="progress-fill"></div></div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-2" id="submit-btn" disabled>Hochladen</button>
+      </form>
+    </div>
+  <% } %>
+</div>
+<script>
+  window.MAX_IMAGE_MB = <%= maxImageMb %>;
+  window.MAX_VIDEO_MB = <%= maxVideoMb %>;
+</script>
+<script src="/js/upload.js"></script>
+<%- include('../partials/foot') %>

@@ -1,0 +1,68 @@
+<%- include('../partials/head', { title: 'Einstellungen' }) %>
+<nav class="navbar">
+  <div class="container">
+    <a class="brand" href="/admin" style="color:inherit;">EventSnap Admin</a>
+    <a href="/admin" class="btn btn-secondary btn-sm">Zur Uebersicht</a>
+  </div>
+</nav>
+
+<div class="container mt-3" style="max-width:640px;">
+  <h1>Einstellungen</h1>
+
+  <div class="card mt-2 stack">
+    <h2 class="mt-0" style="font-size:1.1rem;">Domain / Basis-URL</h2>
+    <p class="text-muted text-sm mt-0">Wird zur Erzeugung der QR-Codes und Gast-Links verwendet.</p>
+    <% if (domainError) { %>
+      <div class="alert alert-error"><%= domainError %></div>
+    <% } %>
+    <form method="POST" action="/admin/einstellungen/domain">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field">
+        <label for="baseUrl">Basis-URL</label>
+        <input type="text" id="baseUrl" name="baseUrl" value="<%= baseUrl %>" required maxlength="200" placeholder="https://fotos.meine-domain.de">
+      </div>
+      <button type="submit" class="btn btn-primary">Speichern</button>
+    </form>
+  </div>
+
+  <div class="card mt-2 stack">
+    <h2 class="mt-0" style="font-size:1.1rem;">Admin-Passwort aendern</h2>
+    <% if (passwordError) { %>
+      <div class="alert alert-error"><%= passwordError %></div>
+    <% } %>
+    <% if (passwordSuccess) { %>
+      <div class="alert alert-success">Passwort erfolgreich geaendert. Die Aenderung ist sofort aktiv, kein Neustart noetig.</div>
+    <% } %>
+    <form method="POST" action="/admin/einstellungen/passwort" class="stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field">
+        <label for="currentPassword">Aktuelles Passwort</label>
+        <input type="password" id="currentPassword" name="currentPassword" required autocomplete="current-password">
+      </div>
+      <div class="field">
+        <label for="newPassword">Neues Passwort</label>
+        <input type="password" id="newPassword" name="newPassword" required minlength="8" autocomplete="new-password">
+        <span class="hint">Mindestens 8 Zeichen.</span>
+      </div>
+      <div class="field">
+        <label for="newPasswordRepeat">Neues Passwort wiederholen</label>
+        <input type="password" id="newPasswordRepeat" name="newPasswordRepeat" required minlength="8" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary">Passwort aendern</button>
+    </form>
+  </div>
+</div>
+
+<% if (domainSaved) { %>
+<div class="modal-backdrop open" id="restart-modal">
+  <div class="modal-box">
+    <h3 class="mt-0">Neustart erforderlich</h3>
+    <p class="mb-0">Diese Aenderung erfordert einen manuellen Neustart des Containers
+      (z.B. <code>docker compose restart</code>), damit die neue Domain fuer QR-Codes
+      wirksam wird.</p>
+    <button type="button" class="btn btn-primary mt-2" onclick="document.getElementById('restart-modal').classList.remove('open')">Verstanden</button>
+  </div>
+</div>
+<% } %>
+
+<%- include('../partials/foot') %>

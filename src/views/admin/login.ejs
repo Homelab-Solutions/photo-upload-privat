@@ -1,0 +1,19 @@
+<%- include('../partials/head', { title: 'Admin-Login' }) %>
+<div class="center-screen">
+  <div class="card container-narrow stack">
+    <div class="text-center">
+      <h1>EventSnap Admin</h1>
+      <p class="text-muted">Bitte melde dich an, um Events zu verwalten.</p>
+    </div>
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <form method="POST" action="/admin/login" class="stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field">
+        <label for="password">Admin-Passwort</label>
+        <input type="password" id="password" name="password" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg">Anmelden</button>
+    </form>
+  </div>
+</div>
+<%- include('../partials/foot') %>

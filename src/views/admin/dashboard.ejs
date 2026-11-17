@@ -1,0 +1,49 @@
+<%- include('../partials/head', { title: 'Admin-Dashboard' }) %>
+<nav class="navbar">
+  <div class="container">
+    <span class="brand">EventSnap Admin</span>
+    <div class="row">
+      <a href="/admin/einstellungen" class="btn btn-secondary btn-sm">Einstellungen</a>
+      <form method="POST" action="/admin/logout">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-secondary btn-sm" type="submit">Abmelden</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <div class="row-between">
+    <h1 class="mt-0">Events</h1>
+    <a href="/admin/events/new" class="btn btn-primary">+ Neues Event</a>
+  </div>
+
+  <% if (!events.length) { %>
+    <div class="card mt-3 text-center">
+      <p class="text-muted">Noch keine Events angelegt.</p>
+    </div>
+  <% } else { %>
+    <div class="event-grid mt-3">
+      <% events.forEach(function(x) { const e = x.event, s = x.stats; %>
+        <div class="card event-card">
+          <div class="row-between">
+            <strong><%= e.name %></strong>
+            <% if (e.archived) { %><span class="badge badge-rejected">Archiviert</span><% } %>
+          </div>
+          <span class="text-muted text-sm">Template: <%= e.template %></span>
+          <div class="stats">
+            <span><strong><%= s.totalUploads %></strong> Uploads</span>
+            <span><strong><%= s.approved %></strong> freigegeben</span>
+            <span><strong><%= s.guestCount %></strong> Gaeste</span>
+            <span><strong><%= (s.totalBytes / (1024*1024)).toFixed(1) %> MB</strong></span>
+          </div>
+          <div class="row mt-1">
+            <a href="/admin/events/<%= e.id %>" class="btn btn-secondary btn-sm">Einstellungen</a>
+            <a href="/admin/events/<%= e.id %>/moderate" class="btn btn-primary btn-sm">Moderieren</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+<%- include('../partials/foot') %>

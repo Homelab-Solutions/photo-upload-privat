@@ -1,0 +1,26 @@
+/* Bordeaux & Gold: elegant, aber kraeftiger als Elegante Hochzeit - tiefes Bordeauxrot + Gold */
+body.tpl-bordeaux-gold {
+  --color-bg: #f7ecec;
+  --color-surface: #ffffff;
+  --color-primary: #7a1734;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #c9a227;
+  --color-text: #35141c;
+  --color-text-muted: #8a5a63;
+  --color-border: #e8d3cf;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --radius: 10px;
+  --radius-lg: 18px;
+  --shadow: 0 3px 14px rgba(122, 23, 52, 0.14);
+  --shadow-lg: 0 16px 34px rgba(122, 23, 52, 0.22);
+  background-image:
+    radial-gradient(circle at 8% 0%, rgba(122, 23, 52, 0.08), transparent 42%),
+    radial-gradient(circle at 92% 100%, rgba(201, 162, 39, 0.16), transparent 45%);
+  background-attachment: fixed;
+}
+body.tpl-bordeaux-gold .navbar { border-bottom-color: var(--color-secondary); }
+body.tpl-bordeaux-gold .btn-primary { background: linear-gradient(135deg, #7a1734, #4d0f21); }
+body.tpl-bordeaux-gold .btn-outline { border-color: var(--color-secondary); color: var(--color-secondary); }
+body.tpl-bordeaux-gold h1, body.tpl-bordeaux-gold h2 { letter-spacing: 0.02em; }
+body.tpl-bordeaux-gold .brand::before { content: '♛ '; color: var(--color-secondary); }

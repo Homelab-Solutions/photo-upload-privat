@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title><%= typeof title !== 'undefined' ? title + ' – EventSnap' : 'EventSnap' %></title>
+<% if (typeof csrfToken !== 'undefined') { %><meta name="csrf-token" content="<%= csrfToken %>"><% } %>
+<link rel="stylesheet" href="/css/base.css">
+<% if (typeof template !== 'undefined' && template) { %>
+<link rel="stylesheet" href="/css/templates/<%= template %>.css">
+<% } %>
+</head>
+<body class="<%= typeof template !== 'undefined' && template ? 'tpl-' + template : '' %>">

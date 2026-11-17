@@ -1,0 +1,23 @@
+/* Elegant Wedding: Gold / Weiss / Roseegold, Serifenschrift */
+body.tpl-elegant-wedding {
+  --color-bg: #fbf6ef;
+  --color-surface: #ffffff;
+  --color-primary: #b8862f;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #e7c9b6;
+  --color-text: #3a2f26;
+  --color-text-muted: #8a7a68;
+  --color-border: #ecdfcd;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --radius: 12px;
+  --radius-lg: 20px;
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(184, 134, 47, 0.06), transparent 40%),
+    radial-gradient(circle at 90% 100%, rgba(231, 201, 182, 0.25), transparent 45%);
+  background-attachment: fixed;
+}
+body.tpl-elegant-wedding .navbar { border-bottom-color: var(--color-secondary); }
+body.tpl-elegant-wedding .btn-primary { background: linear-gradient(135deg, #b8862f, #8f6420); }
+body.tpl-elegant-wedding h1, body.tpl-elegant-wedding h2 { letter-spacing: 0.02em; }
+body.tpl-elegant-wedding .brand::before { content: '✦ '; color: var(--color-primary); }

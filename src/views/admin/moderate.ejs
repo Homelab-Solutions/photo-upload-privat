@@ -1,0 +1,59 @@
+<%- include('../partials/head', { title: 'Moderation – ' + event.name }) %>
+<nav class="navbar">
+  <div class="container">
+    <a class="brand" href="/admin" style="color:inherit;">EventSnap Admin</a>
+    <a href="/admin/events/<%= event.id %>" class="btn btn-secondary btn-sm">Event-Einstellungen</a>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <div class="row-between">
+    <h1 class="mt-0">Moderation: <%= event.name %></h1>
+    <span class="badge badge-pending"><%= guestGroups.reduce((n,g) => n + g.photos.filter(p=>p.status==='pending').length, 0) %> zu pruefen</span>
+  </div>
+
+  <form method="POST" action="/admin/events/<%= event.id %>/bulk" id="bulk-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="row mt-2" style="position:sticky;top:0;background:var(--color-bg);padding:10px 0;z-index:5;">
+      <span class="text-sm text-muted"><span id="sel-count">0</span> ausgewaehlt</span>
+      <button class="btn btn-primary btn-sm" name="action" value="approve" type="submit">Freigeben</button>
+      <button class="btn btn-secondary btn-sm" name="action" value="reject" type="submit">Ablehnen</button>
+      <button class="btn btn-danger btn-sm" name="action" value="delete" type="submit" onclick="return confirm('Ausgewaehlte Fotos wirklich loeschen?');">Loeschen</button>
+    </div>
+
+    <% if (!guestGroups.length) { %>
+      <div class="card mt-2 text-center"><p class="text-muted">Noch keine Uploads vorhanden.</p></div>
+    <% } %>
+
+    <% guestGroups.forEach(function(g) { %>
+      <div class="guest-group mt-3">
+        <div class="row-between guest-group-header">
+          <strong><%= g.guestName %> &ndash; <%= g.photos.length %> Fotos</strong>
+          <div class="row">
+            <label class="text-sm"><input type="checkbox" class="select-all-guest"> Alle auswaehlen</label>
+            <a class="btn btn-outline btn-sm" href="/admin/events/<%= event.id %>/download-guest/<%= g.guestFolder %>">ZIP</a>
+          </div>
+        </div>
+        <div class="gallery-grid">
+          <% g.photos.forEach(function(p) { %>
+            <div class="photo-tile">
+              <input type="checkbox" class="select-check photo-checkbox" name="photoIds" value="<%= p.id %>">
+              <% if (p.type === 'video') { %>
+                <video src="/admin/events/<%= event.id %>/media/<%= p.id %>/original" preload="metadata" muted></video>
+                <span class="video-badge">▶</span>
+              <% } else { %>
+                <img src="/admin/events/<%= event.id %>/media/<%= p.id %>/thumb" loading="lazy" alt="">
+              <% } %>
+              <div class="overlay">
+                <span class="badge badge-<%= p.status %>"><%= p.status %></span>
+                <span>❤ <%= p.likes || 0 %></span>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% }) %>
+  </form>
+</div>
+<script src="/js/admin.js"></script>
+<%- include('../partials/foot') %>

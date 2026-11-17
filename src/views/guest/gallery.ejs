@@ -1,0 +1,48 @@
+<%- include('../partials/head', { title: 'Galerie – ' + event.name, template: event.template }) %>
+<div class="container" style="padding-top:20px;padding-bottom:60px;">
+  <div class="row-between gallery-toolbar">
+    <a href="/e/<%= event.id %>" class="btn btn-secondary btn-sm">&larr; Zurueck</a>
+    <h1 class="mt-0" style="font-size:1.2rem;"><%= event.name %></h1>
+    <a href="/e/<%= event.id %>/download-all" class="btn btn-outline btn-sm">Alle laden</a>
+  </div>
+
+  <div class="row mt-2">
+    <button class="btn btn-primary btn-sm" id="download-selected" disabled>Ausgewaehlte herunterladen (<span id="selected-count">0</span>)</button>
+    <button class="btn btn-secondary btn-sm" id="clear-selection">Auswahl aufheben</button>
+  </div>
+
+  <% if (!photos.length) { %>
+    <div class="card mt-3 text-center">
+      <p class="text-muted">Es wurden noch keine Fotos freigegeben. Schau spaeter wieder vorbei!</p>
+    </div>
+  <% } else { %>
+    <div class="gallery-grid mt-3" id="gallery-grid">
+      <% photos.forEach(function(p) { %>
+        <div class="photo-tile skeleton" data-id="<%= p.id %>" data-type="<%= p.type %>">
+          <input type="checkbox" class="select-check" data-id="<%= p.id %>">
+          <% if (p.type === 'video') { %>
+            <video src="/e/<%= event.id %>/media/<%= p.id %>/original" preload="metadata" muted></video>
+            <span class="video-badge">▶ Video</span>
+          <% } else { %>
+            <img src="/e/<%= event.id %>/media/<%= p.id %>/thumb" loading="lazy" alt="Foto von <%= showNames ? p.guestName : 'Gast' %>">
+          <% } %>
+          <div class="overlay">
+            <span><% if (showNames) { %><%= p.guestName %><% } else { %>&nbsp;<% } %></span>
+            <button class="like-btn" data-id="<%= p.id %>">❤ <span class="like-count"><%= p.likes || 0 %></span></button>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close-btn" id="lightbox-close">&times;</button>
+  <div id="lightbox-content"></div>
+</div>
+
+<script>
+  window.EVENT_ID = <%- JSON.stringify(event.id) %>;
+</script>
+<script src="/js/gallery.js"></script>
+<%- include('../partials/foot') %>

@@ -1,0 +1,125 @@
+<%
+function toLocalInput(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+%>
+<%- include('../partials/head', { title: mode === 'create' ? 'Neues Event' : event.name }) %>
+<nav class="navbar">
+  <div class="container">
+    <a class="brand" href="/admin" style="color:inherit;">EventSnap Admin</a>
+    <a href="/admin" class="btn btn-secondary btn-sm">Zur Uebersicht</a>
+  </div>
+</nav>
+
+<div class="container mt-3" style="max-width:760px;">
+  <h1><%= mode === 'create' ? 'Neues Event anlegen' : 'Event bearbeiten' %></h1>
+
+  <% if (mode === 'edit') { %>
+    <div class="card mb-0 mt-2 stack">
+      <div class="row-between">
+        <div>
+          <strong>Gast-Zugang</strong>
+          <p class="text-muted text-sm mt-0" style="word-break:break-all;"><%= guestUrl %></p>
+        </div>
+        <img src="<%= qr %>" alt="QR-Code" style="width:130px;height:130px;">
+      </div>
+      <div class="stats row text-sm">
+        <span><strong><%= stats.totalUploads %></strong> Uploads</span>
+        <span><strong><%= stats.approved %></strong> freigegeben</span>
+        <span><strong><%= stats.pending %></strong> zu pruefen</span>
+        <span><strong><%= stats.guestCount %></strong> Gaeste</span>
+        <span><strong><%= (stats.totalBytes / (1024*1024)).toFixed(1) %> MB</strong></span>
+      </div>
+      <div class="row">
+        <a href="/admin/events/<%= event.id %>/moderate" class="btn btn-primary btn-sm">Fotos moderieren</a>
+        <a href="/admin/events/<%= event.id %>/download-all" class="btn btn-outline btn-sm">Alle Fotos als ZIP</a>
+        <form method="POST" action="/admin/events/<%= event.id %>/backup-now">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="btn btn-secondary btn-sm" type="submit">Jetzt sichern</button>
+        </form>
+      </div>
+    </div>
+  <% } %>
+
+  <form method="POST" action="<%= mode === 'create' ? '/admin/events' : '/admin/events/' + event.id %>" class="card mt-2 stack">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <div class="field">
+      <label for="name">Event-Name</label>
+      <input type="text" id="name" name="name" value="<%= event.name %>" required maxlength="120">
+    </div>
+
+    <div class="field">
+      <label for="template">Design-Template</label>
+      <select id="template" name="template">
+        <% templates.forEach(function(t) { %>
+          <option value="<%= t.id %>" <%= event.template === t.id ? 'selected' : '' %>><%= t.label %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="password">Einmalpasswort fuer Gaeste</label>
+      <input type="text" id="password" name="password" value="<%= event.password %>" required maxlength="60">
+      <span class="hint">Wird zusammen mit der Event-URL im QR-Code kodiert.</span>
+    </div>
+
+    <div class="row">
+      <div class="field" style="flex:1;min-width:200px;">
+        <label for="uploadStart">Upload-Zeitfenster: Start</label>
+        <input type="datetime-local" id="uploadStart" name="uploadStart" value="<%= toLocalInput(event.uploadWindow && event.uploadWindow.start) %>">
+      </div>
+      <div class="field" style="flex:1;min-width:200px;">
+        <label for="uploadEnd">Upload-Zeitfenster: Ende</label>
+        <input type="datetime-local" id="uploadEnd" name="uploadEnd" value="<%= toLocalInput(event.uploadWindow && event.uploadWindow.end) %>">
+      </div>
+    </div>
+    <p class="hint mt-0">Leer lassen = kein Limit.</p>
+
+    <div class="row">
+      <div class="field" style="flex:1;min-width:200px;">
+        <label for="visibilityStart">Galerie sichtbar ab</label>
+        <input type="datetime-local" id="visibilityStart" name="visibilityStart" value="<%= toLocalInput(event.visibilityWindow && event.visibilityWindow.start) %>">
+      </div>
+      <div class="field" style="flex:1;min-width:200px;">
+        <label for="visibilityEnd">Galerie sichtbar bis</label>
+        <input type="datetime-local" id="visibilityEnd" name="visibilityEnd" value="<%= toLocalInput(event.visibilityWindow && event.visibilityWindow.end) %>">
+      </div>
+    </div>
+    <p class="hint mt-0">Nach Ablauf sehen Gaeste einen Hinweis, das Event bleibt fuer dich als Admin voll zugaenglich.</p>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="showUploaderNames" name="showUploaderNames" <%= event.showUploaderNames ? 'checked' : '' %>>
+      <label for="showUploaderNames" style="font-weight:400;">Uploader-Namen fuer andere Gaeste sichtbar</label>
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="archived" name="archived" <%= event.archived ? 'checked' : '' %>>
+      <label for="archived" style="font-weight:400;">Event als archiviert markieren</label>
+    </div>
+
+    <div class="card-flat stack">
+      <div class="checkbox-row">
+        <input type="checkbox" id="backupEnabled" name="backupEnabled" <%= event.backup && event.backup.enabled ? 'checked' : '' %>>
+        <label for="backupEnabled" style="font-weight:400;">Automatisches Backup aktivieren</label>
+      </div>
+      <div class="field mb-0" style="max-width:200px;">
+        <label for="backupIntervalHours">Intervall (Stunden)</label>
+        <input type="number" id="backupIntervalHours" name="backupIntervalHours" min="1" value="<%= (event.backup && event.backup.intervalHours) || 24 %>">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg mt-2"><%= mode === 'create' ? 'Event anlegen' : 'Speichern' %></button>
+  </form>
+
+  <% if (mode === 'edit') { %>
+    <form method="POST" action="/admin/events/<%= event.id %>/delete" class="mt-2" onsubmit="return confirm('Event inkl. aller Fotos wirklich unwiderruflich loeschen?');">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button type="submit" class="btn btn-danger">Event loeschen</button>
+    </form>
+  <% } %>
+</div>
+<%- include('../partials/foot') %>

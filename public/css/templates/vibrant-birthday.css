@@ -1,0 +1,27 @@
+/* Vibrant Birthday: bunte Verlaeufe, verspielt, runde Formen */
+body.tpl-vibrant-birthday {
+  --color-bg: #fef6ff;
+  --color-surface: #ffffff;
+  --color-primary: #ff5da2;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #6c5ce7;
+  --color-text: #2c2140;
+  --color-text-muted: #7a6f96;
+  --color-border: #f0e0f5;
+  --font-heading: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Segoe UI', system-ui, sans-serif;
+  --radius: 20px;
+  --radius-lg: 28px;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(255, 93, 162, 0.16), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(108, 92, 231, 0.14), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(255, 195, 0, 0.14), transparent 40%);
+  background-attachment: fixed;
+}
+body.tpl-vibrant-birthday .btn-primary {
+  background: linear-gradient(135deg, #ff5da2, #ff9a44);
+}
+body.tpl-vibrant-birthday .card, body.tpl-vibrant-birthday .big-choice, body.tpl-vibrant-birthday .photo-tile {
+  border-radius: var(--radius-lg);
+}
+body.tpl-vibrant-birthday .brand::before { content: '🎉 '; }

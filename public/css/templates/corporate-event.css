@@ -1,0 +1,23 @@
+/* Corporate Event: neutral, Blau/Grau, klare Linien, sachlich */
+body.tpl-corporate-event {
+  --color-bg: #f2f4f7;
+  --color-surface: #ffffff;
+  --color-primary: #1f5fa8;
+  --color-primary-contrast: #ffffff;
+  --color-secondary: #5b6b7c;
+  --color-text: #1d2733;
+  --color-text-muted: #647184;
+  --color-border: #dbe1e8;
+  --font-heading: 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Segoe UI', Arial, sans-serif;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 1px 4px rgba(20, 30, 45, 0.08);
+  --shadow-lg: 0 8px 20px rgba(20, 30, 45, 0.12);
+}
+body.tpl-corporate-event .btn { border-radius: 6px; }
+body.tpl-corporate-event .btn-primary { background: var(--color-primary); }
+body.tpl-corporate-event .card, body.tpl-corporate-event .big-choice, body.tpl-corporate-event .photo-tile {
+  border-radius: var(--radius);
+}
+body.tpl-corporate-event .brand::before { content: '▮ '; color: var(--color-primary); }

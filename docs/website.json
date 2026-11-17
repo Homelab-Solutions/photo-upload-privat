@@ -1,0 +1,9 @@
+{
+  "title_de": "EventSnap",
+  "title_en": "EventSnap",
+  "summary_de": "Gäste-Fotos bei Feiern einsammeln: per QR-Code hochladen, moderieren und gemeinsam in einer Galerie ansehen.",
+  "summary_en": "Collect guest photos at parties: upload via QR code, moderate and browse together in one gallery.",
+  "description_de": "EventSnap sammelt Fotos und Videos von Gästen bei Hochzeiten, Geburtstagen oder Firmenevents. Du legst ein Event an, teilst den QR-Code oder Link samt Einmalpasswort, und deine Gäste laden Bilder direkt vom Handy hoch.\n\nDu moderierst alle Uploads (freigeben, ablehnen, löschen), Gäste sehen die freigegebene Galerie mit Likes und können Fotos einzeln oder als ZIP herunterladen. Acht Design-Vorlagen, Zeitfenster für Upload und Galerie sowie ein Anonymitäts-Schalter für Uploader-Namen sind enthalten.\n\nDie App kommt ohne SQL-Datenbank aus (JSON-Dateien), komprimiert Bilder serverseitig und läuft als Docker-Container.",
+  "description_en": "EventSnap collects photos and videos from guests at weddings, birthdays or company events. You create an event, share the QR code or link with a one-time password, and your guests upload pictures straight from their phones.\n\nYou moderate all uploads (approve, reject, delete); guests see the approved gallery with likes and can download photos individually or as a ZIP. Eight design templates, time windows for upload and gallery and a switch to hide uploader names are included.\n\nThe app needs no SQL database (JSON files), compresses images on the server and runs as a Docker container.",
+  "tags": ["Fotos", "Events", "QR-Code", "Node.js", "Docker"]
+}
